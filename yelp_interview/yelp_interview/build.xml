@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. -->
+<project basedir="." default="build" name="yelp_interview">
+    <property environment="env"/>
+    <property name="ECLIPSE_HOME" value="../../../../eclipse"/>
+    <property name="junit.output.dir" value="junit"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.6"/>
+    <property name="source" value="1.6"/>
+    <path id="JUnit 4.libraryclasspath">
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.junit4_4.5.0.v20090824/junit.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.hamcrest.core_1.1.0.v20090501071000.jar"/>
+    </path>
+    <path id="yelp_interview.classpath">
+        <pathelement location="bin"/>
+        <path refid="JUnit 4.libraryclasspath"/>
+    </path>
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+    <target depends="clean" name="cleanall"/>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects"/>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" source="${source}" target="${target}">
+            <src path="src"/>
+            <classpath refid="yelp_interview.classpath"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
+    <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
+        <copy todir="${ant.library.dir}">
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </copy>
+        <unzip dest="${ant.library.dir}">
+            <patternset includes="jdtCompilerAdapter.jar"/>
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </unzip>
+    </target>
+    <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
+        <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+        <antcall target="build"/>
+    </target>
+    <target name="com.yelp.highlight.test">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="com.yelp.highlight.test.TestDocument" todir="${junit.output.dir}"/>
+            <test name="com.yelp.highlight.test.TestDocumentMatcher" todir="${junit.output.dir}"/>
+            <test name="com.yelp.highlight.test.TestHighlighter" todir="${junit.output.dir}"/>
+            <test name="com.yelp.highlight.test.TestHighlighterUtility" todir="${junit.output.dir}"/>
+            <test name="com.yelp.highlight.test.TestQuery" todir="${junit.output.dir}"/>
+            <test name="com.yelp.highlight.test.TestSnippet" todir="${junit.output.dir}"/>
+            <classpath refid="yelp_interview.classpath"/>
+        </junit>
+    </target>
+    <target name="Highlighter">
+        <java classname="com.yelp.highlight.Highlighter" failonerror="true" fork="yes">
+            <arg line="&quot;My boyfriend and I were looking for a place to grab dinner in the city.  After looking on Yelp and seeing this place serves Deep Dish Pizza (similar to Chicago style), we decided we had to try!  Great little restaurant, which we happened to get there at perfect timing before the crowd started rolling in (5pm).  We ordered a Pepperoni Dish Dish.  Takes 30 minutes to make-- but that is typical and expected for this type of meal.  Service was great.  Has a juke box to listen to some music. Meal was great, however nothing to compare to Chicago.  The crust was almost like a Fried Cornmeal.  However, for a deep dish pizza on this side of the coast, it's great to get your fix.  I saw a few people order the salad and garlic bread near by and that looked great too.&quot; &quot;deep dish pizza&quot;"/>
+            <classpath refid="yelp_interview.classpath"/>
+        </java>
+    </target>
+    <target name="TestDocument">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="com.yelp.highlight.test.TestDocument" todir="${junit.output.dir}"/>
+            <classpath refid="yelp_interview.classpath"/>
+        </junit>
+    </target>
+    <target name="TestDocumentMatcher">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="com.yelp.highlight.test.TestDocumentMatcher" todir="${junit.output.dir}"/>
+            <classpath refid="yelp_interview.classpath"/>
+        </junit>
+    </target>
+    <target name="TestHighlighter">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="com.yelp.highlight.test.TestHighlighter" todir="${junit.output.dir}"/>
+            <classpath refid="yelp_interview.classpath"/>
+        </junit>
+    </target>
+    <target name="TestHighlighter.testHighlighterParagraph1NoMatch">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="com.yelp.highlight.test.TestHighlighter" todir="${junit.output.dir}"/>
+            <classpath refid="yelp_interview.classpath"/>
+        </junit>
+    </target>
+    <target name="TestHighlighter.testHighlighterParagraph1Word">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="com.yelp.highlight.test.TestHighlighter" todir="${junit.output.dir}"/>
+            <classpath refid="yelp_interview.classpath"/>
+        </junit>
+    </target>
+    <target name="TestHighlighterUtility">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="com.yelp.highlight.test.TestHighlighterUtility" todir="${junit.output.dir}"/>
+            <classpath refid="yelp_interview.classpath"/>
+        </junit>
+    </target>
+    <target name="TestQuery">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="com.yelp.highlight.test.TestQuery" todir="${junit.output.dir}"/>
+            <classpath refid="yelp_interview.classpath"/>
+        </junit>
+    </target>
+    <target name="TestSnippet">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="com.yelp.highlight.test.TestSnippet" todir="${junit.output.dir}"/>
+            <classpath refid="yelp_interview.classpath"/>
+        </junit>
+    </target>
+    <target name="junitreport">
+        <junitreport todir="${junit.output.dir}">
+            <fileset dir="${junit.output.dir}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${junit.output.dir}"/>
+        </junitreport>
+    </target>
+</project>

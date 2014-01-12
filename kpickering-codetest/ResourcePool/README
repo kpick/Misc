@@ -1,0 +1,54 @@
+Basic design decisions:
+I opted with a system that uses two thread-safe queues, which had an underlying linked list.
+The purpose for that was get the benefit of synchronization, with the search performance of
+a linked list, because the release, remove and add all require checking for *specific* 
+resources. This is partially because I assumed uniqueness was a criteria on 'add' (it does
+not make much sense to add the same resource twice), and also because state (i.e. occupied 
+vs. non-occupied) matters for several of the blocking operations.
+
+I took one liberty with the acquire method, which is that it will return null in the timeout
+situation as well as the situation if the pool is closed (requirement says that resources 
+should not be acquired, but didn't imply the thread should block on acquisition).
+
+In terms of my synchronized code, I did it at a method level in certain instances because I 
+wanted to make sure the acquire queue was emptied at the same point the occupied queue was 
+filled, to avoid potential deadlocks and race conditions on certain resources. Technically,
+the data structure I used should protect against that. However, if I had more time, I'd go
+back and revisit the locking scenarios to see if I could clean them up more. I was more 
+worried about acquire/release not working and less worried about the other things that look
+at both queues for functionality failing (like add/remove), as the spec said they're the 
+fringe case. 
+
+There could be a slight issue with the remove call if you try to add something at the exact
+point you're trying to remove it, if it goes into the available queue if you're done checking 
+it with the remove and you've gone on to checking the occupied crew... But, if you're adding 
+and deleting a resource at the same time there's nothing to say it would have the desired
+behaivor anyway.
+
+Libraries used:
+Basic java.util.concurrent for data structures. For testing, I used JUnit 4 and GroboUtils5. 
+GroboUtils is a decent concurrency plugin for JUnit that lets me manage my threads more 
+effectively. It was either that or using a bunch of mains, so I opted for the cleaner solution!
+
+Performance:
+I use a Queue backed by a linked list, so performance is not as ideal as me rolling my own
+data structure (like a HashedLinkedBlockingQueue), but it generally has worst case of O(n) in
+terms of memory and time consumption. Because the data is divided into two queues and one or 
+the other (and only occasionally both) are being searched on, it stays within that performance.
+
+Since it's a linked list, insertion is O(1), so even if we search from one and put it into 
+another, it's not a huge hit.
+
+So, overall, the atomic performance of the solution isn't horrible. It's not the best I can 
+make it without some additional effort, but I believe it's stable in terms of concurrency 
+(which is the biggest hurdler with a resource pool). I also think I might be redundantly synch-
+ing in some places, which I'd ideally spend more time looking into.
+
+Testing:
+I've written a fair amount of test cases against this, testing basic single threaded operation 
+as well as for concurrency issues. So far, so good. If you've got a more exhaustive suite, let
+me know if you find something.
+
+-Ken Pickering-
+ken.pickering@gmail.com
+
